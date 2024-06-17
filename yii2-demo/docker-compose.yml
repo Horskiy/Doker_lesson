@@ -1,0 +1,30 @@
+version: '2'
+
+services:
+
+  yii2:
+    image: yiisoftware/yii2-php:7.3-fpm
+    volumes:
+      - ./app:/app
+
+  nginx:
+    build:
+      context: Dockerfiles/nginx
+    image: yii2-demo-nginx
+    ports:
+      - '3000:80'
+    volumes:
+      - ./app:/app
+
+  postgresql:
+    build:
+      context: Dockerfiles/postgresql
+    image: yii2-demo-postgresql
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgres
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
